@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/About">
+        <file>GOSTEC.gif</file>
+        <file>DUDEC.wav</file>
+    </qresource>
+    <qresource prefix="/Icons">
+        <file>Open.ico</file>
+        <file>Exit.png</file>
+        <file>About.ico</file>
+        <file>GOSTec.png</file>
+    </qresource>
+</RCC>
