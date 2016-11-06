@@ -41,8 +41,6 @@ private slots:
 
     void keyDialogOkClickedDecrypt();
 
-    void on_testButton_clicked();
-
     void on_decryptButton_clicked();
 
     void on_actionAbout_program_triggered();

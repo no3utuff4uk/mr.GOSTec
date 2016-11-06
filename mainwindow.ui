@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
-    <height>338</height>
+    <width>531</width>
+    <height>283</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -127,16 +127,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="testButton">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Test mode</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QGroupBox" name="groupBox">
               <property name="title">
                <string>MAC</string>
@@ -174,16 +164,6 @@
                     </spacer>
                    </item>
                    <item>
-                    <widget class="QCheckBox" name="checkBox">
-                     <property name="enabled">
-                      <bool>false</bool>
-                     </property>
-                     <property name="text">
-                      <string>Add MAC to file</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
                     <widget class="QPushButton" name="generateMAC">
                      <property name="enabled">
                       <bool>false</bool>
@@ -215,7 +195,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>520</width>
+     <width>531</width>
      <height>21</height>
     </rect>
    </property>

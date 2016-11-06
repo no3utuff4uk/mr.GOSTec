@@ -5,6 +5,7 @@
 #include "cfb.h"
 #include "ofb.h"
 #include "ctr.h"
+#include "macgenerator.h"
 #include <fstream>
 #include <QMessageBox>
 
@@ -37,7 +38,11 @@ void Encrypt::on_okButton_clicked()
                 std::ofstream::binary);
     //QMessageBox::information(this, "test" , fileInfo->absolutePath() + ui->lineEdit->text() + ".magma");
 
-    destination.write((char*) &mode, sizeof(int));
+    destination.write((char*) &mode, sizeof(unsigned short));
+    uint32_t MAC = magmaGenerateMAC(key, source);
+    destination.write((char*) &MAC, sizeof(uint32_t));
+    source.seekg(0, std::ios::beg);
+
     switch(mode)
     {
         case 0:

@@ -52,7 +52,7 @@ void MainWindow::checkReceivedFilePath()
         ui->lineEdit->setText(filePath);
         ui->encryptButton->setEnabled(true);
         ui->decryptButton->setEnabled(true);
-        ui->testButton->setEnabled(true);
+        //ui->testButton->setEnabled(true);
         ui->generateMAC->setEnabled(true);
 
     }else
@@ -109,52 +109,116 @@ void MainWindow::on_decryptButton_clicked()
 void MainWindow::keyDialogOkClickedDecrypt()
 {
     std::ifstream source(file->fileName().toStdString(), std::ifstream::binary);
-    std::ofstream destination(file->fileName().remove(".magma").toStdString(),std::ofstream::binary);
-    int mode;
-    source.read((char*) &mode, sizeof(int));
+    QString outFile = file->fileName().remove(".magma");
+    outFile.insert(outFile.lastIndexOf('.'),"[Decrypted]");
+
+    std::ofstream destination(outFile.toStdString(),std::ofstream::binary);
+    unsigned short mode;
+    source.read((char*) &mode, sizeof(unsigned short));
+
+    uint32_t fromFileMAC;
+    uint32_t generatedMAC;
+
     switch (mode)
     {
         case 0:
         {
+            source.read((char*) &fromFileMAC, sizeof(uint32_t));
             magmaDecryptECB(key, source, destination);
-            QMessageBox::information(this, "Complete", "Decryption cmplete [ECB]!");
+
+            source.close();
+            destination.close();
+
+            source.open(outFile.toStdString(), std::ifstream::binary);
+            generatedMAC = magmaGenerateMAC(key, source);
+
+            source.close();
+
+            if(fromFileMAC == generatedMAC)
+                QMessageBox::information(this, "Complete", "Decryption cmplete [ECB]!");
+            else
+                QMessageBox::warning(this, "Error", "Decryption error!");
         }break;
         case 1:
         {
+            source.read((char*) &fromFileMAC, sizeof(uint32_t));
             magmaDecryptCBC(key, source, destination);
-            QMessageBox::information(this, "Complete", "Decryption cmplete [CBC]!");
+
+            source.close();
+            destination.close();
+
+            source.open(outFile.toStdString(), std::ifstream::binary);
+            generatedMAC = magmaGenerateMAC(key, source);
+
+            source.close();
+
+            if(fromFileMAC == generatedMAC)
+                QMessageBox::information(this, "Complete", "Decryption cmplete [CBC]!");
+            else
+                QMessageBox::warning(this, "Error", "Decryption error!");
         }break;
         case 2:
         {
+            source.read((char*) &fromFileMAC, sizeof(uint32_t));
             magmaDecryptCFB(key, source, destination);
-            QMessageBox::information(this, "Complete", "Decryption cmplete [CFB]!");
+
+            source.close();
+            destination.close();
+
+            source.open(outFile.toStdString(), std::ifstream::binary);
+            generatedMAC = magmaGenerateMAC(key, source);
+
+            source.close();
+
+            if(fromFileMAC == generatedMAC)
+                QMessageBox::information(this, "Complete", "Decryption cmplete [CFB]!");
+            else
+                QMessageBox::warning(this, "Error", "Decryption error!");
+
         }break;
         case 3:
         {
+            source.read((char*) &fromFileMAC, sizeof(uint32_t));
             magmaDecryptOFB(key, source, destination);
-            QMessageBox::information(this, "Complete", "Decryption cmplete [OFB]!");
+
+            source.close();
+            destination.close();
+
+            source.open(outFile.toStdString(), std::ifstream::binary);
+            generatedMAC = magmaGenerateMAC(key, source);
+
+            source.close();
+
+            if(fromFileMAC == generatedMAC)
+                QMessageBox::information(this, "Complete", "Decryption cmplete [OFB]!");
+            else
+                QMessageBox::warning(this, "Error", "Decryption error!");
         }break;
         case 4:
         {
-            magmaDecryptOFB(key, source, destination);
-            QMessageBox::information(this, "Complete", "Decryption cmplete [CTR]!");
+            source.read((char*) &fromFileMAC, sizeof(uint32_t));
+            magmaDecryptCTR(key, source, destination);
+
+            source.close();
+            destination.close();
+
+            source.open(outFile.toStdString(), std::ifstream::binary);
+            generatedMAC = magmaGenerateMAC(key, source);
+
+            source.close();
+
+            if(fromFileMAC == generatedMAC)
+                QMessageBox::information(this, "Complete", "Decryption cmplete [CTR]!");
+            else
+                QMessageBox::warning(this, "Error", "Decryption error!");
         }break;
         default:
         {
             QMessageBox::warning(this, "Error", "Unknown mode!");
         }break;
     }
-    source.close();
-    destination.close();
 }
 //------------------------------------------------------------
-
-void MainWindow::on_testButton_clicked()
-{
-
-}
-
-
 
 void MainWindow::on_actionAbout_program_triggered()
 {

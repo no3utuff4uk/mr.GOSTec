@@ -24,7 +24,7 @@ private slots:
     void on_cancelButton_clicked();
 
 private:
-    int mode;
+    unsigned short mode;
     uint32_t *key;
     uint64_t initL;
     uint64_t initR;
