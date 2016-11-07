@@ -1,18 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "keydialog.h"
-#include "about.h"
+#include "elements\keydialog.h"
+#include "elements\about.h"
 
-#include "encrypt.h"
-#include "ecb.h"
-#include "cbc.h"
-#include "cfb.h"
-#include "ofb.h"
-#include "ctr.h"
+#include "elements\encrypt.h"
+#include "mods\ecb.h"
+#include "mods\cbc.h"
+#include "mods\cfb.h"
+#include "mods\ofb.h"
+#include "mods\ctr.h"
 
 #include <QMessageBox>
 #include <QFile>
-#include "macgenerator.h"
+#include "mods\macgenerator.h"
 #include <fstream>
 #include <QListWidgetItem>
 

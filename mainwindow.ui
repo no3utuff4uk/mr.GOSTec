@@ -14,9 +14,8 @@
    <string>Mister GOSTec</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normalon>:/Icons/GOSTec.png</normalon>
-   </iconset>
+   <iconset resource="res.qrc">
+    <normaloff>:/Icons/res/GOSTec.png</normaloff>:/Icons/res/GOSTec.png</iconset>
   </property>
   <property name="whatsThis">
    <string/>
@@ -228,9 +227,9 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
    <property name="icon">
-    <iconset>
-     <normalon>:/Icons/Open.ico</normalon>
-    </iconset>
+    <iconset resource="res.qrc">
+     <normaloff>:/Icons/res/Open.ico</normaloff>
+     <normalon>:/Icons/Open.ico</normalon>:/Icons/res/Open.ico</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -238,9 +237,9 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset>
-     <normalon>:/Icons/Exit.png</normalon>
-    </iconset>
+    <iconset resource="res.qrc">
+     <normaloff>:/Icons/res/Exit.png</normaloff>
+     <normalon>:/Icons/Exit.png</normalon>:/Icons/res/Exit.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -251,9 +250,9 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normalon>:/Icons/About.ico</normalon>
-    </iconset>
+    <iconset resource="res.qrc">
+     <normaloff>:/Icons/res/About.ico</normaloff>
+     <normalon>:/Icons/About.ico</normalon>:/Icons/res/About.ico</iconset>
    </property>
    <property name="text">
     <string>About program</string>
@@ -264,6 +263,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

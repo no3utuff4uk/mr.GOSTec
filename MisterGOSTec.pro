@@ -14,28 +14,28 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    magma.cpp \
-    macgenerator.cpp \
-    ecb.cpp \
-    keydialog.cpp \
-    encrypt.cpp \
-    about.cpp \
-    cbc.cpp \
-    cfb.cpp \
-    ofb.cpp \
-    ctr.cpp
+    mods/cbc.cpp \
+    mods/cfb.cpp \
+    mods/ctr.cpp \
+    mods/ecb.cpp \
+    mods/ofb.cpp \
+    mods/magma.cpp \
+    mods/macgenerator.cpp \
+    elements/about.cpp \
+    elements/encrypt.cpp \
+    elements/keydialog.cpp
 
 HEADERS  += mainwindow.h \
-    macgenerator.h \
-    magma.h \
-    ecb.h \
-    keydialog.h \
-    encrypt.h \
-    about.h \
-    cbc.h \
-    cfb.h \
-    ofb.h \
-    ctr.h
+    mods/cbc.h \
+    mods/cfb.h \
+    mods/ctr.h \
+    mods/ecb.h \
+    mods/ofb.h \
+    mods/magma.h \
+    mods/macgenerator.h \
+    elements/about.h \
+    elements/encrypt.h \
+    elements/keydialog.h
 
 FORMS    += mainwindow.ui \
     keyDialog.ui \
@@ -44,3 +44,6 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     res.qrc
+
+win32:RC_ICONS += ./res/GOST_icon.ico
+VERSION = 0.0.16.2

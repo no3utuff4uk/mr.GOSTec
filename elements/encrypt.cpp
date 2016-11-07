@@ -1,11 +1,11 @@
 #include "encrypt.h"
 #include "ui_encrypt.h"
-#include "ecb.h"
-#include "cbc.h"
-#include "cfb.h"
-#include "ofb.h"
-#include "ctr.h"
-#include "macgenerator.h"
+#include "mods\ecb.h"
+#include "mods\cbc.h"
+#include "mods\cfb.h"
+#include "mods\ofb.h"
+#include "mods\ctr.h"
+#include "mods\macgenerator.h"
 #include <fstream>
 #include <QMessageBox>
 

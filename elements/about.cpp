@@ -9,11 +9,11 @@ About::About(QWidget *parent) :
     ui(new Ui::About)
 {
     ui->setupUi(this);
-    movie = new QMovie(":/About/GOSTEC.gif");
+    movie = new QMovie(":/About/res/GOSTEC.gif");
     movie->setScaledSize(QSize(230,160));
     ui->label->setMovie(movie);
     movie->start();
-    sound = new QSound(":/About/DUDEC.wav");
+    sound = new QSound(":/About/res/DUDEC.wav");
     sound->play();
     sound->setLoops(QSound::Infinite);
 }
