@@ -10,12 +10,18 @@ About::About(QWidget *parent) :
 {
     ui->setupUi(this);
     movie = new QMovie(":/About/res/GOSTEC.gif");
+    sound = new QSound(":/About/res/DUDEC.wav");
+
+}
+void About::showEvent(QShowEvent *event)
+{
     movie->setScaledSize(QSize(230,160));
     ui->label->setMovie(movie);
     movie->start();
-    sound = new QSound(":/About/res/DUDEC.wav");
+
     sound->play();
     sound->setLoops(QSound::Infinite);
+    QDialog::showEvent(event);
 }
 
 void About::reject()

@@ -1,9 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "elements\keydialog.h"
-#include "elements\about.h"
 
-#include "elements\encrypt.h"
 #include "mods\ecb.h"
 #include "mods\cbc.h"
 #include "mods\cfb.h"
@@ -21,6 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    openFile = new QFileDialog();
+    encrypt = new Encrypt(this);
+    keyDialog = new KeyDialog(this);
+    about = new About(this);
+
     connect(this, &MainWindow::pathReceived, this, &MainWindow::checkReceivedFilePath);
     modeChange = new QButtonGroup(this);
     modeChange->addButton(ui->mode0,0);
@@ -33,11 +35,15 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete openFile;
+    delete keyDialog;
+    delete encrypt;
+    delete about;
 }
 
+//-----------Получение пути к файлу и проверка корректности--------------
 void MainWindow::on_openFile_clicked()
 {
-    openFile = new QFileDialog();
     filePath = openFile->getOpenFileName();
     emit pathReceived();
 }
@@ -58,6 +64,10 @@ void MainWindow::checkReceivedFilePath()
     }else
     {
         QMessageBox::warning(this, "Error", "Invalid file path: "+ filePath);
+        ui->lineEdit->clear();
+        ui->encryptButton->setDisabled(true);
+        ui->decryptButton->setDisabled(true);
+        ui->generateMAC->setDisabled(true);
         delete file;
     }
 }
@@ -68,12 +78,13 @@ void MainWindow::on_actionOpen_triggered()
     filePath = openFile->getOpenFileName();
     emit pathReceived();
 }
+//----------------------------------------------------------
 
 //----------Запуск режима генерации Имитовставки------------
 void MainWindow::on_generateMAC_clicked()
 {
     std::ifstream inputStream;
-    inputStream.open(file->fileName().toStdString(),std::ifstream::binary);
+    inputStream.open(file->fileName().toLocal8Bit().toStdString(),std::ifstream::binary);
     if(!inputStream.is_open())
         ui->lineMAC->setText("Error");
     else
@@ -87,32 +98,35 @@ void MainWindow::on_generateMAC_clicked()
 //-------------- Запуск режима шифрования-------------------
 void MainWindow::on_encryptButton_clicked()
 {
-    KeyDialog *keyChange = new KeyDialog(key, initL, initR, this);
-    keyChange->show();
-    connect(keyChange, &KeyDialog::okButtonClicked, this, &MainWindow::keyDialogOkClickedEncrypt);
+    keyDialog->setParams(key, initL, initR);
+    keyDialog->show();
+    connect(keyDialog, &KeyDialog::okButtonClickedEncrypt, this, &MainWindow::keyDialogOkClickedEncrypt);
 }
 
 void MainWindow::keyDialogOkClickedEncrypt()
 {
-    Encrypt *forMode = new Encrypt(modeChange->checkedId(),file, key, initL, initR,this);
-    forMode->show();
+    encrypt->setParams(modeChange->checkedId(),file, key, initL, initR);
+    encrypt->show();
 }
 //----------------------------------------------------------
 //-------------Запуск режима расшифрования------------------
 void MainWindow::on_decryptButton_clicked()
 {
-    KeyDialog *keyChange = new KeyDialog(key, this);
-    keyChange->show();
-    connect(keyChange, &KeyDialog::okButtonClicked, this, &MainWindow::keyDialogOkClickedDecrypt);
+    keyDialog->setParams(key);
+    keyDialog->show();
+    connect(keyDialog, &KeyDialog::okButtonClickedDecrypt, this, &MainWindow::keyDialogOkClickedDecrypt);
 }
 
 void MainWindow::keyDialogOkClickedDecrypt()
 {
-    std::ifstream source(file->fileName().toStdString(), std::ifstream::binary);
+    //[]    Убрать записть режима из файла (Режим выбирать из меню)
+    //[]    Переместить дешифрование в отдельный файл
+
+    std::ifstream source(file->fileName().toLocal8Bit().toStdString(), std::ifstream::binary);
     QString outFile = file->fileName().remove(".magma");
     outFile.insert(outFile.lastIndexOf('.'),"[Decrypted]");
 
-    std::ofstream destination(outFile.toStdString(),std::ofstream::binary);
+    std::ofstream destination(outFile.toLocal8Bit().toStdString(),std::ofstream::binary);
     unsigned short mode;
     source.read((char*) &mode, sizeof(unsigned short));
 
@@ -129,7 +143,7 @@ void MainWindow::keyDialogOkClickedDecrypt()
             source.close();
             destination.close();
 
-            source.open(outFile.toStdString(), std::ifstream::binary);
+            source.open(outFile.toLocal8Bit().toStdString(), std::ifstream::binary);
             generatedMAC = magmaGenerateMAC(key, source);
 
             source.close();
@@ -147,7 +161,7 @@ void MainWindow::keyDialogOkClickedDecrypt()
             source.close();
             destination.close();
 
-            source.open(outFile.toStdString(), std::ifstream::binary);
+            source.open(outFile.toLocal8Bit().toStdString(), std::ifstream::binary);
             generatedMAC = magmaGenerateMAC(key, source);
 
             source.close();
@@ -165,7 +179,7 @@ void MainWindow::keyDialogOkClickedDecrypt()
             source.close();
             destination.close();
 
-            source.open(outFile.toStdString(), std::ifstream::binary);
+            source.open(outFile.toLocal8Bit().toStdString(), std::ifstream::binary);
             generatedMAC = magmaGenerateMAC(key, source);
 
             source.close();
@@ -184,7 +198,7 @@ void MainWindow::keyDialogOkClickedDecrypt()
             source.close();
             destination.close();
 
-            source.open(outFile.toStdString(), std::ifstream::binary);
+            source.open(outFile.toLocal8Bit().toStdString(), std::ifstream::binary);
             generatedMAC = magmaGenerateMAC(key, source);
 
             source.close();
@@ -202,7 +216,7 @@ void MainWindow::keyDialogOkClickedDecrypt()
             source.close();
             destination.close();
 
-            source.open(outFile.toStdString(), std::ifstream::binary);
+            source.open(outFile.toLocal8Bit().toStdString(), std::ifstream::binary);
             generatedMAC = magmaGenerateMAC(key, source);
 
             source.close();
@@ -222,7 +236,6 @@ void MainWindow::keyDialogOkClickedDecrypt()
 
 void MainWindow::on_actionAbout_program_triggered()
 {
-    About *about = new About(this);
     about->show();
 }
 

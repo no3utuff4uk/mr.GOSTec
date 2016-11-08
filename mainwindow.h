@@ -9,6 +9,9 @@
 #include <QButtonGroup>
 
 //#include "keydialog.h"
+#include "elements\keydialog.h"
+#include "elements\about.h"
+#include "elements\encrypt.h"
 
 
 namespace Ui {
@@ -49,12 +52,16 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-   // KeyDialog keyDialog;
+   //
     QFileDialog *openFile;
     QFile *file;
     QString filePath;
     QWidget *keyWidget;
     QListWidget *keyList;
+
+    Encrypt *encrypt;
+    About *about;
+    KeyDialog *keyDialog;
 
     QPushButton *keyOk;
     QPushButton *keyCancel;

@@ -14,8 +14,10 @@ class Encrypt : public QDialog
     Q_OBJECT
 
 public:
-    explicit Encrypt(int _mode, QFile *source, uint32_t _key[], uint64_t &_initL, uint64_t &_initR, QWidget *parent = 0);
+    explicit Encrypt(QWidget *parent = 0);
     ~Encrypt();
+
+    void setParams(int _mode, QFile *source, uint32_t _key[], uint64_t &_initL, uint64_t &_initR);
 
 private slots:
 

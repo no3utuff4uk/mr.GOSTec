@@ -19,6 +19,8 @@ public:
     ~About();
 
 private slots:
+    void showEvent(QShowEvent *event);
+
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();

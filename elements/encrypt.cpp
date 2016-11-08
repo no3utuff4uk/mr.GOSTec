@@ -8,17 +8,23 @@
 #include "mods\macgenerator.h"
 #include <fstream>
 #include <QMessageBox>
+//#include <QDebug>
 
 
-Encrypt::Encrypt(int _mode, QFile *source, uint32_t _key[], uint64_t &_initL, uint64_t &_initR, QWidget *parent) :
+Encrypt::Encrypt(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Encrypt), mode(_mode)
+    ui(new Ui::Encrypt)
 {
+    ui->setupUi(this);
+}
+
+void Encrypt::setParams(int _mode, QFile *source, uint32_t _key[], uint64_t &_initL, uint64_t &_initR)
+{
+    mode=_mode;
     key = _key;
     initL = _initL;
     initR = _initR;
     file = source;
-    ui->setupUi(this);
     fileInfo = new QFileInfo(*source);
     ui->lineEdit->setText(fileInfo->fileName());
 }
@@ -26,17 +32,17 @@ Encrypt::Encrypt(int _mode, QFile *source, uint32_t _key[], uint64_t &_initL, ui
 Encrypt::~Encrypt()
 {
     delete ui;
+    delete fileInfo;
 }
 
 
 
 void Encrypt::on_okButton_clicked()
 {
-    std::ifstream source(file->fileName().toStdString(), std::ifstream::binary);
+    std::ifstream source(file->fileName().toLocal8Bit().toStdString(), std::ifstream::binary);
     std::ofstream destination(
-                fileInfo->absolutePath().toStdString()+ "/" + ui->lineEdit->text().toStdString()+ ".magma",
+                fileInfo->absolutePath().toLocal8Bit().toStdString()+ "/" + ui->lineEdit->text().toLocal8Bit().toStdString()+ ".magma",
                 std::ofstream::binary);
-    //QMessageBox::information(this, "test" , fileInfo->absolutePath() + ui->lineEdit->text() + ".magma");
 
     destination.write((char*) &mode, sizeof(unsigned short));
     uint32_t MAC = magmaGenerateMAC(key, source);

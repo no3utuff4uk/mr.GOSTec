@@ -34,13 +34,13 @@ HEADERS  += mainwindow.h \
     mods/magma.h \
     mods/macgenerator.h \
     elements/about.h \
-    elements/encrypt.h \
-    elements/keydialog.h
+    elements/keydialog.h \
+    elements/encrypt.h
 
 FORMS    += mainwindow.ui \
-    keyDialog.ui \
-    encrypt.ui \
-    about.ui
+    elementsForms/about.ui \
+    elementsForms/encrypt.ui \
+    elementsForms/keyDialog.ui
 
 RESOURCES += \
     res.qrc

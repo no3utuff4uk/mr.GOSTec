@@ -5,14 +5,18 @@
 #include <QRegExp>
 #include <QRegExpValidator>
 
-KeyDialog::KeyDialog(uint32_t _key[], uint64_t &_initL, uint64_t &_initR, QWidget *parent) :
+KeyDialog::KeyDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::KeyDialog)
+{
+    ui->setupUi(this);
+}
+
+void KeyDialog::setParams(uint32_t _key[], uint64_t &_initL, uint64_t &_initR)
 {
     key = _key;
     initL = &_initL;
     initR = &_initR;
-    ui->setupUi(this);
 
     ui->initL->setEnabled(true);
     ui->initR->setEnabled(true);
@@ -42,15 +46,15 @@ KeyDialog::KeyDialog(uint32_t _key[], uint64_t &_initL, uint64_t &_initR, QWidge
     ui->k6->setText(QString::number(key[5], 16));
     ui->k7->setText(QString::number(key[6], 16));
     ui->k8->setText(QString::number(key[7], 16));
+
+    isEncrypt = true;
 }
 
 
-KeyDialog::KeyDialog(uint32_t _key[], QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::KeyDialog)
+void KeyDialog::setParams(uint32_t _key[])
 {
     key = _key;
-    ui->setupUi(this);
+
     ui->initL->setDisabled(true);
     ui->initR->setDisabled(true);
     initR = new uint64_t;
@@ -76,7 +80,7 @@ KeyDialog::KeyDialog(uint32_t _key[], QWidget *parent) :
     ui->k7->setText(QString::number(key[6], 16));
     ui->k8->setText(QString::number(key[7], 16));
 
-
+    isEncrypt = false;
 }
 
 KeyDialog::~KeyDialog()
@@ -112,7 +116,10 @@ void KeyDialog::on_okButton_clicked()
 
         //Попробую заменить это ужас потом
 
-        emit okButtonClicked();
+        if(isEncrypt)
+            emit okButtonClickedEncrypt();
+        else
+            emit okButtonClickedDecrypt();
         this->close();
     }
     else
