@@ -12,6 +12,7 @@
 #include "elements\keydialog.h"
 #include "elements\about.h"
 #include "elements\encrypt.h"
+#include "elements/decrypt.h"
 
 
 namespace Ui {
@@ -60,6 +61,7 @@ private:
     QListWidget *keyList;
 
     Encrypt *encrypt;
+    Decrypt *decrypt;
     About *about;
     KeyDialog *keyDialog;
 

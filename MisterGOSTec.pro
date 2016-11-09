@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     mods/macgenerator.cpp \
     elements/about.cpp \
     elements/encrypt.cpp \
-    elements/keydialog.cpp
+    elements/keydialog.cpp \
+    elements/decrypt.cpp
 
 HEADERS  += mainwindow.h \
     mods/cbc.h \
@@ -35,12 +36,14 @@ HEADERS  += mainwindow.h \
     mods/macgenerator.h \
     elements/about.h \
     elements/keydialog.h \
-    elements/encrypt.h
+    elements/encrypt.h \
+    elements/decrypt.h
 
 FORMS    += mainwindow.ui \
     elementsForms/about.ui \
     elementsForms/encrypt.ui \
-    elementsForms/keyDialog.ui
+    elementsForms/keyDialog.ui \
+    elementsForms/decrypt.ui
 
 RESOURCES += \
     res.qrc

@@ -44,7 +44,7 @@ void Encrypt::on_okButton_clicked()
                 fileInfo->absolutePath().toLocal8Bit().toStdString()+ "/" + ui->lineEdit->text().toLocal8Bit().toStdString()+ ".magma",
                 std::ofstream::binary);
 
-    destination.write((char*) &mode, sizeof(unsigned short));
+    //destination.write((char*) &mode, sizeof(unsigned short));
     uint32_t MAC = magmaGenerateMAC(key, source);
     destination.write((char*) &MAC, sizeof(uint32_t));
     source.seekg(0, std::ios::beg);
